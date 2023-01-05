@@ -15,6 +15,8 @@ import {
   PostContent,
   PostInformations,
 } from "./styles";
+import ReactMarkdown from "react-markdown";
+import rehypeHighlight from "rehype-highlight";
 
 export function Post() {
   const [post, setPost] = useState<GithubIssues>();
@@ -58,7 +60,13 @@ export function Post() {
           </p>
         </Infos>
       </PostInformations>
-      <PostContent>{post && post.body}</PostContent>
+      <PostContent>
+        {post && (
+          <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
+            {post.body}
+          </ReactMarkdown>
+        )}
+      </PostContent>
     </PostContainer>
   );
 }
