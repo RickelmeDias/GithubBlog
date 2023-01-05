@@ -27,7 +27,28 @@ export const Infos = styled.div`
   }
 `;
 
-export const PostContent = styled.p`
+export const PostContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   padding: 2.5rem;
   align-items: left;
+  font-family: "Nunito", sans-serif;
+
+  pre {
+    padding: 1rem;
+    background-color: ${(props) => props.theme["base-post"]};
+    font-size: 1rem;
+    font-weight: 400;
+    font-family: "Fira Code", monospace;
+    border-radius: 2px;
+  }
+
+  a {
+    text-decoration: none;
+    color: ${(props) => props.theme.blue};
+    &:hover {
+      box-shadow: inset 0 -2px 1px -1px ${(props) => props.theme.blue};
+    }
+  }
 `;

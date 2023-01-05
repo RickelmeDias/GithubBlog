@@ -1,16 +1,18 @@
 import { formatDistanceToNow } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
 import { ReactNode } from "react";
+import { NavLink } from "react-router-dom";
 import { About, CustomCardContainer, HeaderTitle } from "./styles";
 
 interface CustomCardProps {
   title: string;
   children: ReactNode;
-  time: Date;
+  time: string | Date;
+  id: number;
 }
-export function CustomCard({ title, children, time }: CustomCardProps) {
+export function CustomCard({ title, children, time, id }: CustomCardProps) {
   return (
-    <CustomCardContainer>
+    <CustomCardContainer to={`/post/${id}`}>
       <HeaderTitle>
         <h1>{title}</h1>
         <span>
@@ -20,7 +22,6 @@ export function CustomCard({ title, children, time }: CustomCardProps) {
           })}
         </span>
       </HeaderTitle>
-
       <About>{children}</About>
     </CustomCardContainer>
   );
