@@ -6,7 +6,7 @@ import { About, CustomCardContainer, HeaderTitle } from "./styles";
 interface CustomCardProps {
   title: string;
   children: ReactNode;
-  time: Date;
+  time: string | Date;
 }
 export function CustomCard({ title, children, time }: CustomCardProps) {
   return (

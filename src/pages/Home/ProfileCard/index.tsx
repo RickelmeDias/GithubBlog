@@ -3,40 +3,36 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CustomLink, CustomLinkType } from "../../../components/CustomLink";
 import { Informations, ProfileCardContainer, Social } from "./styles";
+import { useEffect, useState } from "react";
+import { GithubProfile } from "../../../models/GithubProfile";
+import { httpGet } from "../../../lib/axios";
 
 interface ProfileCardProps {
-  name: string;
-  about: string;
-  imageSrc: string;
   githubUser: string;
-  company: string;
-  followers: string;
 }
 
-export function ProfileCard({
-  name,
-  about,
-  imageSrc,
-  githubUser,
-  company,
-  followers,
-}: ProfileCardProps) {
-  const linkGitHub = `https://github.com/${githubUser}`;
+export function ProfileCard({ githubUser }: ProfileCardProps) {
+  const [profileJson, setProfileJson] = useState<GithubProfile>();
+
+  useEffect(() => {
+    httpGet<GithubProfile>("/users/" + githubUser, setProfileJson);
+  }, [githubUser]);
+
   return (
     <ProfileCardContainer>
-      <img src={imageSrc} alt="" srcSet="" />
+      <img src={profileJson && profileJson.avatar_url} alt="" srcSet="" />
       <Informations>
         <span>
-          <h2>{name}</h2>
+          <h2>{profileJson && profileJson.name}</h2>
           <CustomLink
-            to={linkGitHub}
+            to={profileJson?.url ? profileJson.html_url : ""}
             type={CustomLinkType.ACCESS_PAGE}
             outsideSite={true}
           >
             GITHUB
           </CustomLink>
         </span>
-        <p id="about">{about}</p>
+        <p id="about">{profileJson && profileJson.bio}</p>
         <Social>
           <p>
             <FontAwesomeIcon icon={faGithub} size="sm" className="icon" />
@@ -44,11 +40,11 @@ export function ProfileCard({
           </p>
           <p>
             <FontAwesomeIcon icon={faBuilding} size="sm" className="icon" />
-            {company}
+            {profileJson && profileJson.company}
           </p>
           <p>
             <FontAwesomeIcon icon={faUserGroup} size="sm" className="icon" />
-            {followers + " seguidores"}
+            {profileJson && profileJson.followers + " seguidores"}
           </p>
         </Social>
       </Informations>
