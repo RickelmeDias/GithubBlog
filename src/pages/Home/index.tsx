@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { CustomCard } from "../../components/CustomCard";
 import { CustomInput } from "../../components/CustomInput/styles";
+import { githubRepo, githubUser } from "../../enviroments/settings";
 import { httpGet } from "../../lib/axios";
 import { GithubIssues } from "../../models/GithubIssues";
 import { ProfileCard } from "./ProfileCard";
@@ -11,7 +12,10 @@ export function Home() {
   const [issuesFiltered, setIssuesFiltered] = useState<GithubIssues[]>([]);
   const [filter, setFilter] = useState("");
   useEffect(() => {
-    httpGet<GithubIssues[]>("/repos/RickelmeDias/GithubBlog/issues", setIssues);
+    httpGet<GithubIssues[]>(
+      `/repos/${githubUser}/${githubRepo}/issues`,
+      setIssues
+    );
   }, []);
 
   function handleFilter(event: any) {
@@ -33,7 +37,7 @@ export function Home() {
 
   return (
     <HomeContainer>
-      <ProfileCard githubUser="RickelmeDias" />
+      <ProfileCard githubUser={githubUser} />
       <PublicationsInfo>
         <h3>Publicações</h3>
         <p>{issuesFiltered.length} publicações</p>
@@ -47,7 +51,12 @@ export function Home() {
       <GridPublications>
         {issuesFiltered.map((i: GithubIssues) => {
           return (
-            <CustomCard time={i.created_at} title={i.title} key={i.id}>
+            <CustomCard
+              time={i.created_at}
+              title={i.title}
+              key={i.number}
+              id={i.number}
+            >
               {i.body}
             </CustomCard>
           );

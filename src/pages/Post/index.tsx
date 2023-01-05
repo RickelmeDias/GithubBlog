@@ -2,7 +2,12 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faCalendarDay, faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { formatDistanceToNow } from "date-fns";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { CustomLink, CustomLinkType } from "../../components/CustomLink";
+import { githubRepo, githubUser } from "../../enviroments/settings";
+import { httpGet } from "../../lib/axios";
+import { GithubIssues } from "../../models/GithubIssues";
 import {
   Infos,
   MenuPost,
@@ -12,6 +17,16 @@ import {
 } from "./styles";
 
 export function Post() {
+  const [post, setPost] = useState<GithubIssues>();
+  const { id } = useParams();
+
+  useEffect(() => {
+    httpGet<GithubIssues>(
+      `repos/${githubUser}/${githubRepo}/issues/${id}`,
+      setPost
+    );
+  }, []);
+
   return (
     <PostContainer>
       <PostInformations>
@@ -27,32 +42,23 @@ export function Post() {
             VER NO GITHUB
           </CustomLink>
         </MenuPost>
-        <h2>JavaScript data types and data structures</h2>
+        <h2>{post && post.title}</h2>
         <Infos>
           <p>
             <FontAwesomeIcon icon={faGithub} size="sm" className="icon" />
-            {"Rickelme Dias"}
+            {post && post.user.login.toLowerCase()}
           </p>
           <p>
             <FontAwesomeIcon icon={faCalendarDay} size="sm" className="icon" />
-            {formatDistanceToNow(new Date())}
+            {post && formatDistanceToNow(new Date(post.created_at))}
           </p>
           <p>
             <FontAwesomeIcon icon={faComment} size="sm" className="icon" />
-            {8 + " comentários"}
+            {post && `${post.comments} comentários`}
           </p>
         </Infos>
       </PostInformations>
-      <PostContent>
-        Programming languages all have built-in data structures, but these often
-        differ from one language to another. This article attempts to list the
-        built-in data structures available in JavaScript and what properties
-        they have. These can be used to build other data structures. Wherever
-        possible, comparisons with other languages are drawn. Dynamic typing
-        JavaScript is a loosely typed and dynamic language. Variables in
-        JavaScript are not directly associated with any particular value type,
-        and any variable can be assigned (and re-assigned) values of all types:
-      </PostContent>
+      <PostContent>{post && post.body}</PostContent>
     </PostContainer>
   );
 }

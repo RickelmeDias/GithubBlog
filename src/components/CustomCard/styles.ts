@@ -1,6 +1,7 @@
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
-export const CustomCardContainer = styled.button`
+export const CustomCardContainer = styled(NavLink)`
   background-color: ${(props) => props.theme["base-post"]};
   border: none;
   display: flex;
@@ -11,6 +12,7 @@ export const CustomCardContainer = styled.button`
   border-radius: 10px;
   text-align: left;
   align-items: stretch;
+  text-decoration: none;
 
   &:hover {
     box-shadow: inset 0 0 0 2px ${(props) => props.theme["base-label"]};
