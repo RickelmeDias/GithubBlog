@@ -15,13 +15,12 @@ export const LayoutContainer = styled.div`
     width: 100%;
     z-index: -1;
   }
-  background-color: ${(props) => props.theme.background};
 `;
 
 export const LogoHeader = styled.div`
   display: flex;
   justify-content: center;
-  width: 100vw;
+  width: 100%;
   img {
     margin-top: 4rem;
     margin-bottom: 2.875rem;

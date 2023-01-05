@@ -3,14 +3,14 @@ import styled from "styled-components";
 export const CustomCardContainer = styled.button`
   background-color: ${(props) => props.theme["base-post"]};
   border: none;
-  padding: 2rem;
-  width: 416px;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  padding: 2rem;
   height: 260px;
   border-radius: 10px;
   text-align: left;
+  align-items: stretch;
 
   &:hover {
     box-shadow: inset 0 0 0 2px ${(props) => props.theme["base-label"]};
@@ -34,6 +34,7 @@ export const HeaderTitle = styled.div`
     font-weight: 400;
     font-size: 0.875rem;
     color: ${(props) => props.theme["base-span"]};
+    text-align: right;
   }
 `;
 

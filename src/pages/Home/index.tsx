@@ -1,5 +1,7 @@
+import { CustomCard } from "../../components/CustomCard";
+import { CustomInput } from "../../components/CustomInput/styles";
 import { ProfileCard } from "./ProfileCard";
-import { HomeContainer } from "./styles";
+import { GridPublications, HomeContainer, PublicationsInfo } from "./styles";
 
 export function Home() {
   return (
@@ -12,7 +14,25 @@ export function Home() {
         company="IPT"
         followers="5"
       />
-      <h1>Home</h1>
+      <PublicationsInfo>
+        <h3>Publicações</h3>
+        <p>6 publicações</p>
+      </PublicationsInfo>
+      <CustomInput placeholder="Buscar conteúdo" type="text" />
+      <GridPublications>
+        <CustomCard time={new Date()} title="Hello World asassa" key={0}>
+          Text
+        </CustomCard>
+        <CustomCard time={new Date()} title="Hello World asassa" key={0}>
+          Text
+        </CustomCard>
+        <CustomCard time={new Date()} title="Hello World asassa" key={0}>
+          Text
+        </CustomCard>
+        <CustomCard time={new Date()} title="Hello World asassa" key={0}>
+          Text
+        </CustomCard>
+      </GridPublications>
     </HomeContainer>
   );
 }
