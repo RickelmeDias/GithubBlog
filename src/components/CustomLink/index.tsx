@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { LinkContainer } from "./styles";
+import { LinkContainer, OutsideLinkContainer } from "./styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowUpRightFromSquare,
@@ -21,11 +21,19 @@ interface CustomLinkProps {
   children: ReactNode;
   to: string;
   type: CustomLinkType;
+  outsideSite?: boolean;
   size?: 0.75 | 0.875 | 1 | 1.25;
 }
 
-export function CustomLink({ children, to, type, size }: CustomLinkProps) {
+export function CustomLink({
+  children,
+  to,
+  type,
+  outsideSite,
+  size,
+}: CustomLinkProps) {
   const sizeIcon = parserIconSize();
+
   function parserIconSize(): "xs" | "sm" | "lg" | "xl" {
     if (size) {
       return parseIconSize[`${size}`];
@@ -34,14 +42,38 @@ export function CustomLink({ children, to, type, size }: CustomLinkProps) {
     }
   }
   return (
-    <LinkContainer to={to} size={size}>
-      {type === CustomLinkType.BACK_PAGE && (
-        <FontAwesomeIcon icon={faChevronLeft} size={sizeIcon} />
+    <>
+      {!outsideSite ? (
+        <LinkContainer
+          to={to}
+          target={outsideSite ? "_blank" : ""}
+          rel="noopener noreferrer"
+          size={size}
+        >
+          {type === CustomLinkType.BACK_PAGE && (
+            <FontAwesomeIcon icon={faChevronLeft} size={sizeIcon} />
+          )}
+          {children}
+          {type === CustomLinkType.ACCESS_PAGE && (
+            <FontAwesomeIcon icon={faArrowUpRightFromSquare} size={sizeIcon} />
+          )}
+        </LinkContainer>
+      ) : (
+        <OutsideLinkContainer
+          href={to}
+          target="_blank"
+          rel="noopener noreferrer"
+          size={size}
+        >
+          {type === CustomLinkType.BACK_PAGE && (
+            <FontAwesomeIcon icon={faChevronLeft} size={sizeIcon} />
+          )}
+          {children}
+          {type === CustomLinkType.ACCESS_PAGE && (
+            <FontAwesomeIcon icon={faArrowUpRightFromSquare} size={sizeIcon} />
+          )}
+        </OutsideLinkContainer>
       )}
-      {children}
-      {type === CustomLinkType.ACCESS_PAGE && (
-        <FontAwesomeIcon icon={faArrowUpRightFromSquare} size={sizeIcon} />
-      )}
-    </LinkContainer>
+    </>
   );
 }
